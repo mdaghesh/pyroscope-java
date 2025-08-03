@@ -5,6 +5,10 @@ import io.pyroscope.javaagent.api.Logger;
 import io.pyroscope.javaagent.api.ProfilingScheduler;
 import io.pyroscope.javaagent.config.Config;
 import io.pyroscope.javaagent.impl.*;
+import io.pyroscope.javaagent.ondemand.HttpProfilingServer;
+import io.pyroscope.javaagent.ondemand.OnDemandProfilingController;
+import io.pyroscope.javaagent.ondemand.OnDemandPyroscopeAgent;
+import io.pyroscope.javaagent.ondemand.SignalProfilingHandler;
 import io.pyroscope.labels.v2.ScopedContext;
 import org.jetbrains.annotations.NotNull;
 
@@ -152,6 +156,7 @@ public class PyroscopeAgent {
                 if (logger == null) {
                     logger = new DefaultLogger(config.logLevel, System.err);
                 }
+
                 if (scheduler == null) {
                     if (exporter == null) {
                         exporter = new QueuedExporter(config, new PyroscopeExporter(config, logger), logger);

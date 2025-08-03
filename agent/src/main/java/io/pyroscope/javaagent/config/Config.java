@@ -72,6 +72,11 @@ public final class Config {
      */
     private static final String PYROSCOPE_SAMPLING_EVENT_ORDER_CONFIG = "PYROSCOPE_SAMPLING_EVENT_ORDER";
 
+    private static final String PYROSCOPE_ON_DEMAND_MODE = "PYROSCOPE_ON_DEMAND_MODE";
+    private static final String PYROSCOPE_HTTP_TRIGGER_ENABLED = "PYROSCOPE_HTTP_TRIGGER_ENABLED";
+    private static final String PYROSCOPE_HTTP_PORT = "PYROSCOPE_HTTP_PORT";
+    private static final String PYROSCOPE_SIGNAL_TRIGGER_ENABLED = "PYROSCOPE_SIGNAL_TRIGGER_ENABLED";
+
     // JFR profiler settings
     /**
      * Allows you to overwrite default JFR profiler settings
@@ -99,6 +104,11 @@ public final class Config {
     private static final boolean DEFAULT_GC_BEFORE_DUMP = false;
     private static final Duration DEFAULT_SAMPLING_DURATION = null;
     private static final Duration DEFAULT_PROFILE_EXPORT_TIMEOUT = Duration.ofSeconds(10);
+
+    private static final boolean DEFAULT_ON_DEMAND_MODE = false;
+    private static final boolean DEFAULT_HTTP_TRIGGER_ENABLED = true;
+    private static final int DEFAULT_HTTP_PORT = 8090;
+    private static final boolean DEFAULT_SIGNAL_TRIGGER_ENABLED = true;
 
     public final boolean agentEnabled;
     public final String applicationName;
@@ -138,6 +148,11 @@ public final class Config {
     public final String basicAuthUser;
     public final String basicAuthPassword;
 
+    public final boolean onDemandMode;
+    public final boolean httpTriggerEnabled;
+    public final int httpPort;
+    public final boolean signalTriggerEnabled;
+
     Config(final boolean agentEnabled,
            final String applicationName,
            final ProfilerType profilerType,
@@ -166,7 +181,11 @@ public final class Config {
            String APExtraArguments,
            String basicAuthUser,
            String basicAuthPassword,
-           Duration profileExportTimeout) {
+           Duration profileExportTimeout,
+           boolean onDemandMode,
+           boolean httpTriggerEnabled,
+           int httpPort,
+           boolean signalTriggerEnabled) {
         this.agentEnabled = agentEnabled;
         this.applicationName = applicationName;
         this.profilerType = profilerType;
@@ -198,6 +217,12 @@ public final class Config {
         this.pushQueueCapacity = pushQueueCapacity;
         this.labels = Collections.unmodifiableMap(labels);
         this.profileExportTimeout = profileExportTimeout;
+
+        this.onDemandMode = onDemandMode;
+        this.httpTriggerEnabled = httpTriggerEnabled;
+        this.httpPort = httpPort;
+        this.signalTriggerEnabled = signalTriggerEnabled;
+
         HttpUrl serverAddressUrl = HttpUrl.parse(serverAddress);
         if (serverAddressUrl == null) {
             throw new IllegalArgumentException("invalid url " + serverAddress);
@@ -305,7 +330,11 @@ public final class Config {
             cp.get(PYROSCOPE_AP_LOG_LEVEL_CONFIG),
             cp.get(PYROSCOPE_AP_EXTRA_ARGUMENTS_CONFIG),
             cp.get(PYROSCOPE_BASIC_AUTH_USER_CONFIG), cp.get(PYROSCOPE_BASIC_AUTH_PASSWORD_CONFIG),
-            profileExportTimeout(cp));
+            profileExportTimeout(cp),
+            onDemandMode(cp),
+            httpTriggerEnabled(cp),
+            httpPort(cp),
+            signalTriggerEnabled(cp));
     }
 
     /**
@@ -489,8 +518,6 @@ public final class Config {
         }
     }
 
-
-
     private static int javaStackDepthMax(ConfigurationProvider configurationProvider) {
         final String javaStackDepthMaxStr = configurationProvider.get(PYROSCOPE_JAVA_STACK_DEPTH_MAX);
         if (null == javaStackDepthMaxStr || javaStackDepthMaxStr.isEmpty()) {
@@ -569,6 +596,34 @@ public final class Config {
         } catch (NumberFormatException e) {
             return DEFAULT_PUSH_QUEUE_CAPACITY;
         }
+    }
+
+    private static boolean onDemandMode(ConfigurationProvider cp) {
+        return bool(cp, PYROSCOPE_ON_DEMAND_MODE, DEFAULT_ON_DEMAND_MODE);
+    }
+
+    private static boolean httpTriggerEnabled(ConfigurationProvider cp) {
+        return bool(cp, PYROSCOPE_HTTP_TRIGGER_ENABLED, DEFAULT_HTTP_TRIGGER_ENABLED);
+    }
+
+    private static int httpPort(ConfigurationProvider cp) {
+        final String strHttpPort = cp.get(PYROSCOPE_HTTP_PORT);
+        if (strHttpPort == null || strHttpPort.isEmpty()) {
+            return DEFAULT_HTTP_PORT;
+        }
+        try {
+            int port = Integer.parseInt(strHttpPort);
+            if (port <= 0 || port > 65535) {
+                return DEFAULT_HTTP_PORT;
+            }
+            return port;
+        } catch (NumberFormatException e) {
+            return DEFAULT_HTTP_PORT;
+        }
+    }
+
+    private static boolean signalTriggerEnabled(ConfigurationProvider cp) {
+        return bool(cp, PYROSCOPE_SIGNAL_TRIGGER_ENABLED, DEFAULT_SIGNAL_TRIGGER_ENABLED);
     }
 
     public static Map<String, String> labels(ConfigurationProvider configurationProvider) {
@@ -731,6 +786,11 @@ public final class Config {
         private String basicAuthPassword;
         private String jfrProfilerSettings;
 
+        private boolean onDemandMode = DEFAULT_ON_DEMAND_MODE;
+        private boolean httpTriggerEnabled = DEFAULT_HTTP_TRIGGER_ENABLED;
+        private int httpPort = DEFAULT_HTTP_PORT;
+        private boolean signalTriggerEnabled = DEFAULT_SIGNAL_TRIGGER_ENABLED;
+
         public Builder() {
         }
 
@@ -766,6 +826,10 @@ public final class Config {
             APExtraArguments = buildUpon.APExtraArguments;
             basicAuthUser = buildUpon.basicAuthUser;
             basicAuthPassword = buildUpon.basicAuthPassword;
+            onDemandMode = buildUpon.onDemandMode;
+            httpTriggerEnabled = buildUpon.httpTriggerEnabled;
+            httpPort = buildUpon.httpPort;
+            signalTriggerEnabled = buildUpon.signalTriggerEnabled;
         }
 
         public Builder setAgentEnabled(boolean agentEnabled) {
@@ -940,6 +1004,26 @@ public final class Config {
             return this;
         }
 
+        public Builder setOnDemandMode(boolean onDemandMode) {
+            this.onDemandMode = onDemandMode;
+            return this;
+        }
+
+        public Builder setHttpTriggerEnabled(boolean httpTriggerEnabled) {
+            this.httpTriggerEnabled = httpTriggerEnabled;
+            return this;
+        }
+
+        public Builder setHttpPort(int httpPort) {
+            this.httpPort = httpPort;
+            return this;
+        }
+
+        public Builder setSignalTriggerEnabled(boolean signalTriggerEnabled) {
+            this.signalTriggerEnabled = signalTriggerEnabled;
+            return this;
+        }
+
         public @NotNull Config build() {
             if (applicationName == null || applicationName.isEmpty()) {
                 applicationName = generateApplicationName();
@@ -972,7 +1056,11 @@ public final class Config {
                 APLogLevel,
                 APExtraArguments,
                 basicAuthUser, basicAuthPassword,
-                profileExportTimeout);
+                profileExportTimeout,
+                onDemandMode,
+                httpTriggerEnabled,
+                httpPort,
+                signalTriggerEnabled);
         }
     }
 }
