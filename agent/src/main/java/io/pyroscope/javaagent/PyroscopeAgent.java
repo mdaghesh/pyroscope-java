@@ -16,12 +16,23 @@ import java.lang.instrument.Instrumentation;
 
 import static io.pyroscope.Preconditions.checkNotNull;
 
+/**
+ * Modified version of PyroscopeAgent that integrates the on‑demand profiling
+ * support. If {@code config.onDemandMode} is enabled, the agent delegates
+ * start‑up to {@link OnDemandPyroscopeAgent} which configures an
+ * {@link io.pyroscope.javaagent.impl.OnDemandScheduler}.  Otherwise it
+ * behaves like the upstream continuous profiling agent.
+ */
 public class PyroscopeAgent {
     private static final Object sLock = new Object();
     private static Options sOptions = null;
 
+    /**
+     * JVM entry point.  Reads configuration and delegates to either the
+     * continuous or on‑demand agent based on the {@code onDemandMode} flag.
+     */
     public static void premain(final String agentArgs,
-                               final Instrumentation inst) {
+        final Instrumentation inst) {
         final Config config;
         try {
             config = Config.build(DefaultConfigurationProvider.INSTANCE);
@@ -30,15 +41,40 @@ public class PyroscopeAgent {
             DefaultLogger.PRECONFIG_LOGGER.log(Logger.Level.ERROR, "Error starting profiler %s", e);
             return;
         }
-        start(config);
+        if (config.onDemandMode) {
+            try {
+                OnDemandPyroscopeAgent.start(config);
+            } catch (Throwable t) {
+                DefaultLogger.PRECONFIG_LOGGER.log(Logger.Level.ERROR,
+                    "On‑demand agent failed to start; falling back to continuous mode", t);
+                start(config); // fallback
+            }
+        } else {
+            start(config);
+        }
     }
 
+    /**
+     * Starts the agent with default configuration.  If on‑demand mode is
+     * configured, this method redirects to the on‑demand agent instead of
+     * starting a continuous scheduler.
+     */
     public static void start() {
         start(new Config.Builder().build());
     }
 
     public static void start(@NotNull Config config) {
         checkNotNull(config, "config");
+        // honour on‑demand mode when start() is called directly
+        if (config.onDemandMode) {
+            try {
+                OnDemandPyroscopeAgent.start(config);
+            } catch (Throwable t) {
+                DefaultLogger.PRECONFIG_LOGGER.log(Logger.Level.ERROR,
+                    "On‑demand agent failed to start", t);
+            }
+            return;
+        }
         start(new Options.Builder(config).build());
     }
 
@@ -97,9 +133,9 @@ public class PyroscopeAgent {
 
     /**
      * Options allow to swap pyroscope components:
-     * - io.pyroscope.javaagent.api.ProfilingScheduler
-     * - org.apache.logging.log4j.Logger
-     * - io.pyroscope.javaagent.api.Exporter for io.pyroscope.javaagent.impl.ContinuousProfilingScheduler
+     *  - {@link io.pyroscope.javaagent.api.ProfilingScheduler}
+     *  - {@link Logger}
+     *  - {@link Exporter} for {@link ContinuousProfilingScheduler}
      */
     public static class Options {
         final Config config;

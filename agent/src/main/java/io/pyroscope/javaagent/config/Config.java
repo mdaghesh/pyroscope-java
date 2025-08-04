@@ -107,7 +107,7 @@ public final class Config {
 
     private static final boolean DEFAULT_ON_DEMAND_MODE = false;
     private static final boolean DEFAULT_HTTP_TRIGGER_ENABLED = true;
-    private static final int DEFAULT_HTTP_PORT = 8090;
+    private static final int DEFAULT_HTTP_PORT = 8999;
     private static final boolean DEFAULT_SIGNAL_TRIGGER_ENABLED = true;
 
     public final boolean agentEnabled;
