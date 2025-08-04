@@ -1,7 +1,6 @@
 package io.pyroscope.javaagent.ondemand;
 
 import sun.misc.Signal;
-import sun.misc.SignalHandler;
 import java.util.logging.Logger;
 
 public class SignalProfilingHandler {

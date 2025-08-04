@@ -10,9 +10,6 @@ import io.pyroscope.javaagent.impl.OnDemandScheduler;
 import io.pyroscope.javaagent.impl.PyroscopeExporter;
 import io.pyroscope.javaagent.impl.QueuedExporter;
 
-// extra imports for HTTP and signal triggers
-import io.pyroscope.javaagent.ondemand.HttpProfilingServer;
-import io.pyroscope.javaagent.ondemand.SignalProfilingHandler;
 
 /**
  * Entry point for on‑demand profiling.  When invoked with a configuration
