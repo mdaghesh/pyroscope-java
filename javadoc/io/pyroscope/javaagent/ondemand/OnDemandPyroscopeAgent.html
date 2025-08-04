@@ -133,6 +133,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <hr>
 <pre>public class <span class="typeNameLabel">OnDemandPyroscopeAgent</span>
 extends java.lang.Object</pre>
+<div class="block">Entry point for on‑demand profiling.  When invoked with a configuration
+ where <code>onDemandMode</code> is <code>true</code>, this class constructs a
+ <a href="../impl/OnDemandScheduler.html" title="class in io.pyroscope.javaagent.impl"><code>OnDemandScheduler</code></a> and passes it to the normal <a href="../PyroscopeAgent.html" title="class in io.pyroscope.javaagent"><code>PyroscopeAgent</code></a>
+ so that profiling only begins when explicitly triggered.</div>
 </li>
 </ul>
 </div>
@@ -177,7 +181,9 @@ extends java.lang.Object</pre>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>static void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#start(io.pyroscope.javaagent.config.Config)">start</a></span>&#8203;(<a href="../config/Config.html" title="class in io.pyroscope.javaagent.config">Config</a>&nbsp;config)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Starts the agent in on‑demand mode if enabled on the config.</div>
+</td>
 </tr>
 </table>
 <ul class="blockList">
@@ -229,6 +235,14 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>start</h4>
 <pre class="methodSignature">public static&nbsp;void&nbsp;start&#8203;(<a href="../config/Config.html" title="class in io.pyroscope.javaagent.config">Config</a>&nbsp;config)</pre>
+<div class="block">Starts the agent in on‑demand mode if enabled on the config.  If
+ <code>config.onDemandMode</code> is false, this method delegates back to
+ <a href="../PyroscopeAgent.html#start(io.pyroscope.javaagent.config.Config)"><code>PyroscopeAgent.start(Config)</code></a> so that the regular continuous
+ scheduler is used.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>config</code> - loaded configuration</dd>
+</dl>
 </li>
 </ul>
 </li>

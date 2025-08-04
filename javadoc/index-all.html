@@ -505,7 +505,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><a href="io/pyroscope/javaagent/ondemand/OnDemandProfilingController.ProfilingResult.html" title="class in io.pyroscope.javaagent.ondemand"><span class="typeNameLink">OnDemandProfilingController.ProfilingResult</span></a> - Class in <a href="io/pyroscope/javaagent/ondemand/package-summary.html">io.pyroscope.javaagent.ondemand</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/pyroscope/javaagent/ondemand/OnDemandPyroscopeAgent.html" title="class in io.pyroscope.javaagent.ondemand"><span class="typeNameLink">OnDemandPyroscopeAgent</span></a> - Class in <a href="io/pyroscope/javaagent/ondemand/package-summary.html">io.pyroscope.javaagent.ondemand</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Entry point for on‑demand profiling.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/pyroscope/javaagent/ondemand/OnDemandPyroscopeAgent.html#%3Cinit%3E()">OnDemandPyroscopeAgent()</a></span> - Constructor for class io.pyroscope.javaagent.ondemand.<a href="io/pyroscope/javaagent/ondemand/OnDemandPyroscopeAgent.html" title="class in io.pyroscope.javaagent.ondemand">OnDemandPyroscopeAgent</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/pyroscope/javaagent/impl/OnDemandScheduler.html" title="class in io.pyroscope.javaagent.impl"><span class="typeNameLink">OnDemandScheduler</span></a> - Class in <a href="io/pyroscope/javaagent/impl/package-summary.html">io.pyroscope.javaagent.impl</a></dt>
@@ -533,7 +535,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="memberNameLink"><a href="io/pyroscope/javaagent/impl/DefaultLogger.html#PRECONFIG_LOGGER">PRECONFIG_LOGGER</a></span> - Static variable in class io.pyroscope.javaagent.impl.<a href="io/pyroscope/javaagent/impl/DefaultLogger.html" title="class in io.pyroscope.javaagent.impl">DefaultLogger</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/pyroscope/javaagent/PyroscopeAgent.html#premain(java.lang.String,java.lang.instrument.Instrumentation)">premain(String, Instrumentation)</a></span> - Static method in class io.pyroscope.javaagent.<a href="io/pyroscope/javaagent/PyroscopeAgent.html" title="class in io.pyroscope.javaagent">PyroscopeAgent</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">JVM entry point.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/pyroscope/javaagent/config/Config.html#profileExportTimeout">profileExportTimeout</a></span> - Variable in class io.pyroscope.javaagent.config.<a href="io/pyroscope/javaagent/config/Config.html" title="class in io.pyroscope.javaagent.config">Config</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/pyroscope/javaagent/api/ProfilerApi.html" title="interface in io.pyroscope.javaagent.api"><span class="typeNameLink">ProfilerApi</span></a> - Interface in <a href="io/pyroscope/javaagent/api/package-summary.html">io.pyroscope.javaagent.api</a></dt>
@@ -582,15 +586,18 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
  possible to do so without exceeding the queue's capacity.</div>
 </dd>
 <dt><a href="io/pyroscope/javaagent/PyroscopeAgent.html" title="class in io.pyroscope.javaagent"><span class="typeNameLink">PyroscopeAgent</span></a> - Class in <a href="io/pyroscope/javaagent/package-summary.html">io.pyroscope.javaagent</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Modified version of PyroscopeAgent that integrates the on‑demand profiling
+ support.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/pyroscope/javaagent/PyroscopeAgent.html#%3Cinit%3E()">PyroscopeAgent()</a></span> - Constructor for class io.pyroscope.javaagent.<a href="io/pyroscope/javaagent/PyroscopeAgent.html" title="class in io.pyroscope.javaagent">PyroscopeAgent</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/pyroscope/javaagent/PyroscopeAgent.Options.html" title="class in io.pyroscope.javaagent"><span class="typeNameLink">PyroscopeAgent.Options</span></a> - Class in <a href="io/pyroscope/javaagent/package-summary.html">io.pyroscope.javaagent</a></dt>
 <dd>
 <div class="block">Options allow to swap pyroscope components:
- - io.pyroscope.javaagent.api.ProfilingScheduler
- - org.apache.logging.log4j.Logger
- - io.pyroscope.javaagent.api.Exporter for io.pyroscope.javaagent.impl.ContinuousProfilingScheduler</div>
+  - <a href="io/pyroscope/javaagent/api/ProfilingScheduler.html" title="interface in io.pyroscope.javaagent.api"><code>ProfilingScheduler</code></a>
+  - <a href="io/pyroscope/javaagent/api/Logger.html" title="interface in io.pyroscope.javaagent.api"><code>Logger</code></a>
+  - <a href="io/pyroscope/javaagent/api/Exporter.html" title="interface in io.pyroscope.javaagent.api"><code>Exporter</code></a> for <a href="io/pyroscope/javaagent/impl/ContinuousProfilingScheduler.html" title="class in io.pyroscope.javaagent.impl"><code>ContinuousProfilingScheduler</code></a></div>
 </dd>
 <dt><a href="io/pyroscope/javaagent/PyroscopeAgent.Options.Builder.html" title="class in io.pyroscope.javaagent"><span class="typeNameLink">PyroscopeAgent.Options.Builder</span></a> - Class in <a href="io/pyroscope/javaagent/package-summary.html">io.pyroscope.javaagent</a></dt>
 <dd>&nbsp;</dd>
@@ -778,7 +785,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="memberNameLink"><a href="io/pyroscope/javaagent/ProfilerDelegate.html#start()">start()</a></span> - Method in interface io.pyroscope.javaagent.<a href="io/pyroscope/javaagent/ProfilerDelegate.html" title="interface in io.pyroscope.javaagent">ProfilerDelegate</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/pyroscope/javaagent/PyroscopeAgent.html#start()">start()</a></span> - Static method in class io.pyroscope.javaagent.<a href="io/pyroscope/javaagent/PyroscopeAgent.html" title="class in io.pyroscope.javaagent">PyroscopeAgent</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Starts the agent with default configuration.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/pyroscope/javaagent/PyroscopeAgent.html#start(io.pyroscope.javaagent.config.Config)">start(Config)</a></span> - Static method in class io.pyroscope.javaagent.<a href="io/pyroscope/javaagent/PyroscopeAgent.html" title="class in io.pyroscope.javaagent">PyroscopeAgent</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/pyroscope/javaagent/api/ProfilingScheduler.html#start(io.pyroscope.javaagent.ProfilerDelegate)">start(ProfilerDelegate)</a></span> - Method in interface io.pyroscope.javaagent.api.<a href="io/pyroscope/javaagent/api/ProfilingScheduler.html" title="interface in io.pyroscope.javaagent.api">ProfilingScheduler</a></dt>
@@ -796,7 +805,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="memberNameLink"><a href="io/pyroscope/javaagent/PyroscopeAgent.html#start(io.pyroscope.javaagent.PyroscopeAgent.Options)">start(PyroscopeAgent.Options)</a></span> - Static method in class io.pyroscope.javaagent.<a href="io/pyroscope/javaagent/PyroscopeAgent.html" title="class in io.pyroscope.javaagent">PyroscopeAgent</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/pyroscope/javaagent/ondemand/OnDemandPyroscopeAgent.html#start(io.pyroscope.javaagent.config.Config)">start(Config)</a></span> - Static method in class io.pyroscope.javaagent.ondemand.<a href="io/pyroscope/javaagent/ondemand/OnDemandPyroscopeAgent.html" title="class in io.pyroscope.javaagent.ondemand">OnDemandPyroscopeAgent</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Starts the agent in on‑demand mode if enabled on the config.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/pyroscope/javaagent/impl/OnDemandScheduler.html#start(io.pyroscope.javaagent.ProfilerDelegate)">start(ProfilerDelegate)</a></span> - Method in class io.pyroscope.javaagent.impl.<a href="io/pyroscope/javaagent/impl/OnDemandScheduler.html" title="class in io.pyroscope.javaagent.impl">OnDemandScheduler</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/pyroscope/javaagent/Snapshot.html#started">started</a></span> - Variable in class io.pyroscope.javaagent.<a href="io/pyroscope/javaagent/Snapshot.html" title="class in io.pyroscope.javaagent">Snapshot</a></dt>

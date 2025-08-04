@@ -223,7 +223,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i24" class="altColor">
 <td class="colFirst"><a href="io/pyroscope/javaagent/ondemand/OnDemandPyroscopeAgent.html" title="class in io.pyroscope.javaagent.ondemand">OnDemandPyroscopeAgent</a></td>
-<th class="colLast" scope="row">&nbsp;</th>
+<th class="colLast" scope="row">
+<div class="block">Entry point for on‑demand profiling.</div>
+</th>
 </tr>
 <tr id="i25" class="rowColor">
 <td class="colFirst"><a href="io/pyroscope/javaagent/impl/OnDemandScheduler.html" title="class in io.pyroscope.javaagent.impl">OnDemandScheduler</a></td>
@@ -269,15 +271,18 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i35" class="rowColor">
 <td class="colFirst"><a href="io/pyroscope/javaagent/PyroscopeAgent.html" title="class in io.pyroscope.javaagent">PyroscopeAgent</a></td>
-<th class="colLast" scope="row">&nbsp;</th>
+<th class="colLast" scope="row">
+<div class="block">Modified version of PyroscopeAgent that integrates the on‑demand profiling
+ support.</div>
+</th>
 </tr>
 <tr id="i36" class="altColor">
 <td class="colFirst"><a href="io/pyroscope/javaagent/PyroscopeAgent.Options.html" title="class in io.pyroscope.javaagent">PyroscopeAgent.Options</a></td>
 <th class="colLast" scope="row">
 <div class="block">Options allow to swap pyroscope components:
- - io.pyroscope.javaagent.api.ProfilingScheduler
- - org.apache.logging.log4j.Logger
- - io.pyroscope.javaagent.api.Exporter for io.pyroscope.javaagent.impl.ContinuousProfilingScheduler</div>
+  - <a href="io/pyroscope/javaagent/api/ProfilingScheduler.html" title="interface in io.pyroscope.javaagent.api"><code>ProfilingScheduler</code></a>
+  - <a href="io/pyroscope/javaagent/api/Logger.html" title="interface in io.pyroscope.javaagent.api"><code>Logger</code></a>
+  - <a href="io/pyroscope/javaagent/api/Exporter.html" title="interface in io.pyroscope.javaagent.api"><code>Exporter</code></a> for <a href="io/pyroscope/javaagent/impl/ContinuousProfilingScheduler.html" title="class in io.pyroscope.javaagent.impl"><code>ContinuousProfilingScheduler</code></a></div>
 </th>
 </tr>
 <tr id="i37" class="rowColor">

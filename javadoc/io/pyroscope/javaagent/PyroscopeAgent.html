@@ -133,6 +133,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <hr>
 <pre>public class <span class="typeNameLabel">PyroscopeAgent</span>
 extends java.lang.Object</pre>
+<div class="block">Modified version of PyroscopeAgent that integrates the on‑demand profiling
+ support. If <code>config.onDemandMode</code> is enabled, the agent delegates
+ start‑up to <a href="ondemand/OnDemandPyroscopeAgent.html" title="class in io.pyroscope.javaagent.ondemand"><code>OnDemandPyroscopeAgent</code></a> which configures an
+ <a href="impl/OnDemandScheduler.html" title="class in io.pyroscope.javaagent.impl"><code>OnDemandScheduler</code></a>.  Otherwise it
+ behaves like the upstream continuous profiling agent.</div>
 </li>
 </ul>
 </div>
@@ -158,9 +163,9 @@ extends java.lang.Object</pre>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="PyroscopeAgent.Options.html" title="class in io.pyroscope.javaagent">PyroscopeAgent.Options</a></span></code></th>
 <td class="colLast">
 <div class="block">Options allow to swap pyroscope components:
- - io.pyroscope.javaagent.api.ProfilingScheduler
- - org.apache.logging.log4j.Logger
- - io.pyroscope.javaagent.api.Exporter for io.pyroscope.javaagent.impl.ContinuousProfilingScheduler</div>
+  - <a href="api/ProfilingScheduler.html" title="interface in io.pyroscope.javaagent.api"><code>ProfilingScheduler</code></a>
+  - <a href="api/Logger.html" title="interface in io.pyroscope.javaagent.api"><code>Logger</code></a>
+  - <a href="api/Exporter.html" title="interface in io.pyroscope.javaagent.api"><code>Exporter</code></a> for <a href="impl/ContinuousProfilingScheduler.html" title="class in io.pyroscope.javaagent.impl"><code>ContinuousProfilingScheduler</code></a></div>
 </td>
 </tr>
 </table>
@@ -211,12 +216,16 @@ extends java.lang.Object</pre>
 <td class="colFirst"><code>static void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#premain(java.lang.String,java.lang.instrument.Instrumentation)">premain</a></span>&#8203;(java.lang.String&nbsp;agentArgs,
        java.lang.instrument.Instrumentation&nbsp;inst)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">JVM entry point.</div>
+</td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>static void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#start()">start</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Starts the agent with default configuration.</div>
+</td>
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>static void</code></td>
@@ -284,6 +293,8 @@ extends java.lang.Object</pre>
 <h4>premain</h4>
 <pre class="methodSignature">public static&nbsp;void&nbsp;premain&#8203;(java.lang.String&nbsp;agentArgs,
                            java.lang.instrument.Instrumentation&nbsp;inst)</pre>
+<div class="block">JVM entry point.  Reads configuration and delegates to either the
+ continuous or on‑demand agent based on the <code>onDemandMode</code> flag.</div>
 </li>
 </ul>
 <a id="start()">
@@ -293,6 +304,9 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>start</h4>
 <pre class="methodSignature">public static&nbsp;void&nbsp;start()</pre>
+<div class="block">Starts the agent with default configuration.  If on‑demand mode is
+ configured, this method redirects to the on‑demand agent instead of
+ starting a continuous scheduler.</div>
 </li>
 </ul>
 <a id="start(io.pyroscope.javaagent.config.Config)">
