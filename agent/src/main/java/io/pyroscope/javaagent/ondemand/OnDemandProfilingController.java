@@ -92,7 +92,7 @@ public class OnDemandProfilingController {
     /**
      * Starts a profiling session for the given duration.  If a session is
      * already active, returns a {@link ProfilingResult} indicating that
-     * profiling is already running.  Otherwise it starts the profiler,
+     * profiling is already running. Otherwise, it starts the profiler,
      * records the current time, schedules a task to stop profiling after
      * the requested duration, and optionally schedules periodic exports.
      *
@@ -150,7 +150,7 @@ public class OnDemandProfilingController {
     /**
      * Stops an active profiling session.  If no session is active, returns
      * a {@link ProfilingResult} indicating there is nothing to stop.
-     * Otherwise cancels the scheduled tasks, stops the profiler, exports
+     * Otherwise, cancels the scheduled tasks, stops the profiler, exports
      * the final snapshot, and resets the active flag.
      *
      * @return result of the stop request
