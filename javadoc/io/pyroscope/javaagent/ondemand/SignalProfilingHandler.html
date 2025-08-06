@@ -133,6 +133,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <hr>
 <pre>public class <span class="typeNameLabel">SignalProfilingHandler</span>
 extends java.lang.Object</pre>
+<div class="block">Registers signal handlers for on‑demand profiling.  SIGUSR1 starts
+ profiling for a default duration, and SIGUSR2 stops profiling.  This
+ class is separate from the controller so that signal handling logic
+ remains isolated.</div>
 </li>
 </ul>
 </div>
@@ -177,7 +181,9 @@ extends java.lang.Object</pre>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#registerSignalHandlers()">registerSignalHandlers</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Registers handlers for SIGUSR1 and SIGUSR2.</div>
+</td>
 </tr>
 </table>
 <ul class="blockList">
@@ -229,6 +235,9 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>registerSignalHandlers</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;registerSignalHandlers()</pre>
+<div class="block">Registers handlers for SIGUSR1 and SIGUSR2.  On platforms where
+ sun.misc.Signal is unavailable or the signals cannot be registered,
+ any exceptions are logged and ignored.</div>
 </li>
 </ul>
 </li>

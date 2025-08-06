@@ -133,6 +133,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <hr>
 <pre>public class <span class="typeNameLabel">HttpProfilingServer</span>
 extends java.lang.Object</pre>
+<div class="block">Simple HTTP server that exposes endpoints to start, stop, and check
+ the status of on‑demand profiling sessions.  It uses the provided
+ <a href="OnDemandProfilingController.html" title="class in io.pyroscope.javaagent.ondemand"><code>OnDemandProfilingController</code></a> to control profiling.</div>
 </li>
 </ul>
 </div>
@@ -183,7 +186,9 @@ extends java.lang.Object</pre>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#stop()">stop</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Stops the HTTP server.</div>
+</td>
 </tr>
 </table>
 <ul class="blockList">
@@ -250,6 +255,7 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>stop</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;stop()</pre>
+<div class="block">Stops the HTTP server.</div>
 </li>
 </ul>
 </li>

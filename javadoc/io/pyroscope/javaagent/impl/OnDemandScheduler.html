@@ -138,6 +138,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre>public class <span class="typeNameLabel">OnDemandScheduler</span>
 extends java.lang.Object
 implements <a href="../api/ProfilingScheduler.html" title="interface in io.pyroscope.javaagent.api">ProfilingScheduler</a></pre>
+<div class="block">A <a href="../api/ProfilingScheduler.html" title="interface in io.pyroscope.javaagent.api"><code>ProfilingScheduler</code></a> implementation that defers all sampling
+ activity until an on‑demand profiling session is started via the
+ associated <a href="../ondemand/OnDemandProfilingController.html" title="class in io.pyroscope.javaagent.ondemand"><code>OnDemandProfilingController</code></a>.  When <a href="#start(io.pyroscope.javaagent.ProfilerDelegate)"><code>start(io.pyroscope.javaagent.ProfilerDelegate)</code></a>
+ is invoked the profiler is registered with the controller but no
+ sampling is started.  Actual profiling is controlled entirely by
+ <code>OnDemandProfilingController.startProfiling()</code> and
+ <code>OnDemandProfilingController.stopProfiling()</code>.</div>
 </li>
 </ul>
 </div>

@@ -133,6 +133,14 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <hr>
 <pre>public class <span class="typeNameLabel">OnDemandProfilingController</span>
 extends java.lang.Object</pre>
+<div class="block">Controls the lifecycle of an on‑demand profiling session.  It supports
+ starting and stopping the profiler on demand, scheduling a single
+ export at the end of a session or periodic exports at a configurable
+ upload interval.  When a session is started the profiler runs until
+ either the specified duration elapses or <a href="#stopProfiling()"><code>stopProfiling()</code></a>
+ is called.  If an upload interval greater than zero is configured,
+ snapshots are exported periodically during the session; otherwise
+ only a single snapshot is exported when the session ends.</div>
 </li>
 </ul>
 </div>
@@ -156,7 +164,9 @@ extends java.lang.Object</pre>
 <tr class="altColor">
 <td class="colFirst"><code>static class&nbsp;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="OnDemandProfilingController.ProfilingResult.html" title="class in io.pyroscope.javaagent.ondemand">OnDemandProfilingController.ProfilingResult</a></span></code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Simple value type returned by start/stop methods.</div>
+</td>
 </tr>
 </table>
 </li>
@@ -179,6 +189,13 @@ extends java.lang.Object</pre>
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(io.pyroscope.javaagent.config.Config)">OnDemandProfilingController</a></span>&#8203;(<a href="../config/Config.html" title="class in io.pyroscope.javaagent.config">Config</a>&nbsp;config)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
+<tr class="rowColor">
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(io.pyroscope.javaagent.config.Config,long)">OnDemandProfilingController</a></span>&#8203;(<a href="../config/Config.html" title="class in io.pyroscope.javaagent.config">Config</a>&nbsp;config,
+                           long&nbsp;uploadIntervalSeconds)</code></th>
+<td class="colLast">
+<div class="block">Constructs a controller with a custom upload interval.</div>
+</td>
+</tr>
 </table>
 </li>
 </ul>
@@ -200,32 +217,44 @@ extends java.lang.Object</pre>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isProfilingActive()">isProfilingActive</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns whether a profiling session is currently active.</div>
+</td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setExporter(io.pyroscope.javaagent.api.Exporter)">setExporter</a></span>&#8203;(<a href="../api/Exporter.html" title="interface in io.pyroscope.javaagent.api">Exporter</a>&nbsp;exporter)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Assigns the exporter used to send snapshots to the server.</div>
+</td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setProfiler(io.pyroscope.javaagent.ProfilerDelegate)">setProfiler</a></span>&#8203;(<a href="../ProfilerDelegate.html" title="interface in io.pyroscope.javaagent">ProfilerDelegate</a>&nbsp;profiler)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Assigns the profiler delegate.</div>
+</td>
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#shutdown()">shutdown</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Shut down the scheduler to free resources when the JVM exits.</div>
+</td>
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="OnDemandProfilingController.ProfilingResult.html" title="class in io.pyroscope.javaagent.ondemand">OnDemandProfilingController.ProfilingResult</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#startProfiling(long)">startProfiling</a></span>&#8203;(long&nbsp;durationSeconds)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Starts a profiling session for the given duration.</div>
+</td>
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code><a href="OnDemandProfilingController.ProfilingResult.html" title="class in io.pyroscope.javaagent.ondemand">OnDemandProfilingController.ProfilingResult</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#stopProfiling()">stopProfiling</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Stops an active profiling session.</div>
+</td>
 </tr>
 </table>
 <ul class="blockList">
@@ -254,10 +283,30 @@ extends java.lang.Object</pre>
 <a id="&lt;init&gt;(io.pyroscope.javaagent.config.Config)">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>OnDemandProfilingController</h4>
 <pre>public&nbsp;OnDemandProfilingController&#8203;(<a href="../config/Config.html" title="class in io.pyroscope.javaagent.config">Config</a>&nbsp;config)</pre>
+</li>
+</ul>
+<a id="&lt;init&gt;(io.pyroscope.javaagent.config.Config,long)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>OnDemandProfilingController</h4>
+<pre>public&nbsp;OnDemandProfilingController&#8203;(<a href="../config/Config.html" title="class in io.pyroscope.javaagent.config">Config</a>&nbsp;config,
+                                   long&nbsp;uploadIntervalSeconds)</pre>
+<div class="block">Constructs a controller with a custom upload interval.  The interval
+ should be specified in seconds.  If the interval is less than or
+ equal to zero, periodic exports are disabled.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>config</code> - configuration for the agent</dd>
+<dd><code>uploadIntervalSeconds</code> - interval between periodic exports in
+                              seconds, or <code>0</code> to disable periodic
+                              exports</dd>
+</dl>
 </li>
 </ul>
 </li>
@@ -277,6 +326,8 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>setProfiler</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;setProfiler&#8203;(<a href="../ProfilerDelegate.html" title="interface in io.pyroscope.javaagent">ProfilerDelegate</a>&nbsp;profiler)</pre>
+<div class="block">Assigns the profiler delegate.  The profiler is not started until
+ <a href="#startProfiling(long)"><code>startProfiling(long)</code></a> is called.</div>
 </li>
 </ul>
 <a id="setExporter(io.pyroscope.javaagent.api.Exporter)">
@@ -286,6 +337,8 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>setExporter</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;setExporter&#8203;(<a href="../api/Exporter.html" title="interface in io.pyroscope.javaagent.api">Exporter</a>&nbsp;exporter)</pre>
+<div class="block">Assigns the exporter used to send snapshots to the server.  Must be
+ non‑null before a profiling session can be started.</div>
 </li>
 </ul>
 <a id="startProfiling(long)">
@@ -295,6 +348,20 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>startProfiling</h4>
 <pre class="methodSignature">public&nbsp;<a href="OnDemandProfilingController.ProfilingResult.html" title="class in io.pyroscope.javaagent.ondemand">OnDemandProfilingController.ProfilingResult</a>&nbsp;startProfiling&#8203;(long&nbsp;durationSeconds)</pre>
+<div class="block">Starts a profiling session for the given duration.  If a session is
+ already active, returns a <a href="OnDemandProfilingController.ProfilingResult.html" title="class in io.pyroscope.javaagent.ondemand"><code>OnDemandProfilingController.ProfilingResult</code></a> indicating that
+ profiling is already running. Otherwise, it starts the profiler,
+ records the current time, schedules a task to stop profiling after
+ the requested duration, and optionally schedules periodic exports.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>durationSeconds</code> - how long the profiling session should run in
+                        seconds.  A value less than or equal to zero
+                        runs indefinitely until <a href="#stopProfiling()"><code>stopProfiling()</code></a> is
+                        called.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>result of the start request</dd>
+</dl>
 </li>
 </ul>
 <a id="stopProfiling()">
@@ -304,6 +371,14 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>stopProfiling</h4>
 <pre class="methodSignature">public&nbsp;<a href="OnDemandProfilingController.ProfilingResult.html" title="class in io.pyroscope.javaagent.ondemand">OnDemandProfilingController.ProfilingResult</a>&nbsp;stopProfiling()</pre>
+<div class="block">Stops an active profiling session.  If no session is active, returns
+ a <a href="OnDemandProfilingController.ProfilingResult.html" title="class in io.pyroscope.javaagent.ondemand"><code>OnDemandProfilingController.ProfilingResult</code></a> indicating there is nothing to stop.
+ Otherwise, cancels the scheduled tasks, stops the profiler, exports
+ the final snapshot, and resets the active flag.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>result of the stop request</dd>
+</dl>
 </li>
 </ul>
 <a id="isProfilingActive()">
@@ -313,6 +388,7 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>isProfilingActive</h4>
 <pre class="methodSignature">public&nbsp;boolean&nbsp;isProfilingActive()</pre>
+<div class="block">Returns whether a profiling session is currently active.</div>
 </li>
 </ul>
 <a id="shutdown()">
@@ -322,6 +398,7 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>shutdown</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;shutdown()</pre>
+<div class="block">Shut down the scheduler to free resources when the JVM exits.</div>
 </li>
 </ul>
 </li>
