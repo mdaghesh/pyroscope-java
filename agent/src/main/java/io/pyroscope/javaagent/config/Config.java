@@ -58,6 +58,7 @@ public final class Config {
     private static final String PYROSCOPE_HTTP_HEADERS = "PYROSCOPE_HTTP_HEADERS";
     private static final String PYROSCOPE_TENANT_ID = "PYROSCOPE_TENANT_ID";
     private static final String PYROSCOPE_PROFILE_EXPORT_TIMEOUT = "PYROSCOPE_PROFILE_EXPORT_TIMEOUT";
+    private static final String PYROSCOPE_ON_DEMAND_UPLOAD_INTERVAL = "PYROSCOPE_ON_DEMAND_UPLOAD_INTERVAL";
 
     /**
      * Experimental feature, may be removed in the future
@@ -109,6 +110,7 @@ public final class Config {
     private static final boolean DEFAULT_HTTP_TRIGGER_ENABLED = true;
     private static final int DEFAULT_HTTP_PORT = 8999;
     private static final boolean DEFAULT_SIGNAL_TRIGGER_ENABLED = true;
+    private static final long DEFAULT_ON_DEMAND_UPLOAD_INTERVAL_SECONDS = 10L;
 
     public final boolean agentEnabled;
     public final String applicationName;
@@ -152,6 +154,7 @@ public final class Config {
     public final boolean httpTriggerEnabled;
     public final int httpPort;
     public final boolean signalTriggerEnabled;
+    public final long onDemandUploadIntervalSeconds;
 
     Config(final boolean agentEnabled,
            final String applicationName,
@@ -185,7 +188,8 @@ public final class Config {
            boolean onDemandMode,
            boolean httpTriggerEnabled,
            int httpPort,
-           boolean signalTriggerEnabled) {
+           boolean signalTriggerEnabled,
+           long onDemandUploadIntervalSeconds) {
         this.agentEnabled = agentEnabled;
         this.applicationName = applicationName;
         this.profilerType = profilerType;
@@ -222,6 +226,7 @@ public final class Config {
         this.httpTriggerEnabled = httpTriggerEnabled;
         this.httpPort = httpPort;
         this.signalTriggerEnabled = signalTriggerEnabled;
+        this.onDemandUploadIntervalSeconds = onDemandUploadIntervalSeconds;
 
         HttpUrl serverAddressUrl = HttpUrl.parse(serverAddress);
         if (serverAddressUrl == null) {
@@ -334,7 +339,8 @@ public final class Config {
             onDemandMode(cp),
             httpTriggerEnabled(cp),
             httpPort(cp),
-            signalTriggerEnabled(cp));
+            signalTriggerEnabled(cp),
+            onDemandUploadIntervalSeconds(cp));
     }
 
     /**
@@ -501,6 +507,20 @@ public final class Config {
             DefaultLogger.PRECONFIG_LOGGER.log(Logger.Level.WARN, "Invalid %s value %s, using %s",
                 PYROSCOPE_UPLOAD_INTERVAL_CONFIG, uploadIntervalStr, DEFAULT_UPLOAD_INTERVAL);
             return DEFAULT_UPLOAD_INTERVAL;
+        }
+    }
+
+    private static long onDemandUploadIntervalSeconds(ConfigurationProvider configurationProvider) {
+        final String onDemandUploadIntervalStr = configurationProvider.get(PYROSCOPE_ON_DEMAND_UPLOAD_INTERVAL);
+        if (onDemandUploadIntervalStr == null || onDemandUploadIntervalStr.isEmpty()) {
+            return DEFAULT_ON_DEMAND_UPLOAD_INTERVAL_SECONDS;
+        }
+        try {
+            return Long.parseLong(onDemandUploadIntervalStr);
+        } catch (final NumberFormatException e) {
+            DefaultLogger.PRECONFIG_LOGGER.log(Logger.Level.WARN, "Invalid %s value %s, using %d",
+                PYROSCOPE_ON_DEMAND_UPLOAD_INTERVAL, onDemandUploadIntervalStr, DEFAULT_ON_DEMAND_UPLOAD_INTERVAL_SECONDS);
+            return DEFAULT_ON_DEMAND_UPLOAD_INTERVAL_SECONDS;
         }
     }
 
@@ -790,6 +810,7 @@ public final class Config {
         private boolean httpTriggerEnabled = DEFAULT_HTTP_TRIGGER_ENABLED;
         private int httpPort = DEFAULT_HTTP_PORT;
         private boolean signalTriggerEnabled = DEFAULT_SIGNAL_TRIGGER_ENABLED;
+        private long onDemandUploadIntervalSeconds = DEFAULT_ON_DEMAND_UPLOAD_INTERVAL_SECONDS;
 
         public Builder() {
         }
@@ -830,6 +851,7 @@ public final class Config {
             httpTriggerEnabled = buildUpon.httpTriggerEnabled;
             httpPort = buildUpon.httpPort;
             signalTriggerEnabled = buildUpon.signalTriggerEnabled;
+            onDemandUploadIntervalSeconds = buildUpon.onDemandUploadIntervalSeconds;
         }
 
         public Builder setAgentEnabled(boolean agentEnabled) {
@@ -869,6 +891,11 @@ public final class Config {
 
         public Builder setUploadInterval(Duration uploadInterval) {
             this.uploadInterval = uploadInterval;
+            return this;
+        }
+
+        public Builder setOnDemandUploadIntervalSeconds(long onDemandUploadIntervalSeconds) {
+            this.onDemandUploadIntervalSeconds = onDemandUploadIntervalSeconds;
             return this;
         }
 
@@ -1060,7 +1087,8 @@ public final class Config {
                 onDemandMode,
                 httpTriggerEnabled,
                 httpPort,
-                signalTriggerEnabled);
+                signalTriggerEnabled,
+                onDemandUploadIntervalSeconds);
         }
     }
 }

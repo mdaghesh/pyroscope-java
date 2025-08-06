@@ -61,7 +61,7 @@ shadowJar {
         include "**.so.sha1"
     }
 
-    archiveFileName = "pyroscope.jar"
+    archiveFileName = "pyroscope-atypon-" + pyroscopeVersion + ".jar"
 
     minimize()
     archiveClassifier.set('')

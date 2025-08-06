@@ -10,12 +10,13 @@ import io.pyroscope.javaagent.impl.OnDemandScheduler;
 import io.pyroscope.javaagent.impl.PyroscopeExporter;
 import io.pyroscope.javaagent.impl.QueuedExporter;
 
-
 /**
  * Entry point for on‑demand profiling.  When invoked with a configuration
- * where {@code onDemandMode} is {@code true}, this class constructs a
- * {@link OnDemandScheduler} and passes it to the normal {@link PyroscopeAgent}
- * so that profiling only begins when explicitly triggered.
+ * where {@code onDemandMode} is {@code true}, this class constructs an
+ * {@link OnDemandProfilingController} that optionally performs periodic
+ * exports and passes it to the normal {@link PyroscopeAgent} so that
+ * profiling only begins when explicitly triggered via the HTTP or signal
+ * APIs.
  */
 public class OnDemandPyroscopeAgent {
     /**
@@ -44,18 +45,42 @@ public class OnDemandPyroscopeAgent {
         Logger logger = defaultLogger(config);
         logger.log(Logger.Level.INFO, "Starting Pyroscope in on‑demand mode");
 
-        // Create controller that will manage profiling sessions
-        OnDemandProfilingController controller = new OnDemandProfilingController(config);
+        // Determine the upload interval for periodic exports.  Users can
+        // override this by setting PYROSCOPE_ON_DEMAND_UPLOAD_INTERVAL in
+        // the environment.  If the value is not set or invalid, no
+        // periodic exports will be scheduled.
+        long uploadInterval = config.onDemandUploadIntervalSeconds;
+        String envInterval = System.getenv("PYROSCOPE_ON_DEMAND_UPLOAD_INTERVAL");
+        if (envInterval != null && !envInterval.isEmpty()) {
+            try {
+                uploadInterval = Long.parseLong(envInterval);
+            } catch (NumberFormatException ignored) {
+                logger.log(Logger.Level.WARN, "Invalid PYROSCOPE_ON_DEMAND_UPLOAD_INTERVAL: %s", envInterval);
+                uploadInterval = 0;
+            }
+        }
+        if (uploadInterval > 0) {
+            logger.log(Logger.Level.INFO, "On‑demand upload interval set to %s seconds", uploadInterval);
+        } else {
+            logger.log(Logger.Level.INFO, "On‑demand upload interval disabled; a single snapshot will be exported at session end");
+        }
 
+        // Create controller that will manage profiling sessions and schedule
+        // periodic exports if requested.
+        OnDemandProfilingController controller = new OnDemandProfilingController(config, uploadInterval);
+
+        // Create an exporter.  We wrap the base exporter in a queue so that
+        // network outages do not lose snapshots.
         Exporter baseExporter = new PyroscopeExporter(config, logger);
         Exporter exporter = new QueuedExporter(config, baseExporter, logger);
         controller.setExporter(exporter);
 
-        // Scheduler that does not start the profiler until requested
+        // Scheduler that defers sampling until the first on‑demand trigger
         OnDemandScheduler scheduler = new OnDemandScheduler(controller);
 
         // Create profiler delegate based off config (no start here)
         ProfilerDelegate profiler = ProfilerDelegate.create(config);
+        controller.setProfiler(profiler);
 
         // Build options with our custom scheduler and exporter
         PyroscopeAgent.Options options = new PyroscopeAgent.Options.Builder(config)
